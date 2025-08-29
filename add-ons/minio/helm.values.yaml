@@ -3,13 +3,14 @@
 
 ## Global MinIO configuration
 image:
-  repository: docker.io/minio/minio
+  repository: quay.io/minio/minio 
   tag: RELEASE.2025-07-23T15-54-02Z
 
   pullPolicy: IfNotPresent
 
 ## MinIO server mode - distributed for HA
-mode: standalone
+mode: distributed
+#mode: standalone
 
 ## Number of drives per node (should be even, minimum 4 for distributed mode)
 drivesPerNode: 1
