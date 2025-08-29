@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: k8s-addons-app
+  namespace: argocd        # ArgoCD watches apps here by default
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mafshar85/k8s-p.git
+    targetRevision: main     # or set a branch/tag/commit, e.g. "main"
+    path: argocd/k8s-addons-app
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
