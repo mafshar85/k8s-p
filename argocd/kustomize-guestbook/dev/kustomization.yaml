@@ -1,0 +1,16 @@
+# kustomize-guestbook/dev/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+- ../base
+namePrefix: dev-
+resources:
+- ingress.yaml
+patchesStrategicMerge:
+- |-
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: guestbook-ui
+  spec:
+    replicas: 2

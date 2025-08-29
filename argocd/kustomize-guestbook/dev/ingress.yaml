@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: guestbook-ingress
+  annotations:
+    # Use the cert-manager annotation to specify the ClusterIssuer
+    cert-manager.io/cluster-issuer: letsencrypt-dns
+    # Tell the NGINX ingress controller to automatically redirect HTTP to HTTPS
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx # Assuming you are using the NGINX Ingress Controller
+  rules:
+  - host: dev.guestbook.sterlink.ir
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: guestbook-ui
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - dev.guestbook.sterlink.ir
+    secretName: guestbook-tls # cert-manager will store the certificate in this secret
