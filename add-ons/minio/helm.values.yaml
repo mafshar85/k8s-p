@@ -35,8 +35,8 @@ extraArgs: []
 
 ## MinIO server environment variables
 environment:
-  MINIO_SERVER_URL: https://object.kube.sterlink.ir
-  MINIO_BROWSER_REDIRECT_URL: https://minio-console.kube.sterlink.ir
+  MINIO_SERVER_URL: https://object.sterlink.ir
+  MINIO_BROWSER_REDIRECT_URL: https://minio-console.sterlink.ir
   MINIO_PROMETHEUS_AUTH_TYPE: "public"
 
 ## MinIO Console configuration
@@ -68,11 +68,11 @@ ingress:
   path: /
   # Ensure this host matches the `MINIO_SERVER_URL`
   hosts:
-    - object.kube.sterlink.ir
+    - object.sterlink.ir
   tls:
     - secretName: minio-tls
       hosts:
-        - object.kube.sterlink.ir
+        - object.sterlink.ir
 
 # MinIO Console Ingress configuration
 consoleIngress:
@@ -88,11 +88,11 @@ consoleIngress:
   path: /
   # Ensure this host matches the `MINIO_BROWSER_REDIRECT_URL`
   hosts:
-    - minio-console.kube.sterlink.ir
+    - minio-console.sterlink.ir
   tls:
     - secretName: minio-console-tls
       hosts:
-        - minio-console.kube.sterlink.ir
+        - minio-console.sterlink.ir
 
 
 ## Persistence configuration
