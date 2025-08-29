@@ -9,14 +9,14 @@ image:
   pullPolicy: IfNotPresent
 
 ## MinIO server mode - distributed for HA
-mode: distributed
-#mode: standalone
+#mode: distributed
+mode: standalone
 
 ## Number of drives per node (should be even, minimum 4 for distributed mode)
 drivesPerNode: 1
 
 ## Number of MinIO server nodes (minimum 4 for distributed mode)
-replicas: 4
+replicas: 1
 
 ## Deployment strategy
 deploymentUpdate:
