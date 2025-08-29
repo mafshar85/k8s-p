@@ -25,8 +25,8 @@ deploymentUpdate:
 
 ## MinIO server configuration
 existingSecret: ""
-rootUser: "admin"
-rootPassword: "minio0000"  # Change this in production!
+rootUser: "admineEcq9vcNVBWh7jLZiQ"
+rootPassword: "R9D6jPNgX8VFLjfHmJjNbrU7VrYnlyJu"  # Change this in production!
 
 
 ## MinIO server arguments
@@ -34,8 +34,8 @@ extraArgs: []
 
 ## MinIO server environment variables
 environment:
-  MINIO_BROWSER_REDIRECT_URL: "https://minio-console.kube.sterlink.ir"
-  MINIO_SERVER_URL: "https://object.kube.sterlink.ir"
+  MINIO_SERVER_URL: https://object.kube.sterlink.ir
+  MINIO_BROWSER_REDIRECT_URL: https://minio-console.kube.sterlink.ir
   MINIO_PROMETHEUS_AUTH_TYPE: "public"
 
 ## MinIO Console configuration
