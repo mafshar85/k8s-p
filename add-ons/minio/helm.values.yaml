@@ -34,8 +34,8 @@ extraArgs: []
 
 ## MinIO server environment variables
 environment:
-  MINIO_BROWSER_REDIRECT_URL: "https://minio-console.sterlink.ir"
-  MINIO_SERVER_URL: "https://object.sterlink.ir"
+  MINIO_BROWSER_REDIRECT_URL: "https://minio-console.kube.sterlink.ir"
+  MINIO_SERVER_URL: "https://object.kube.sterlink.ir"
   MINIO_PROMETHEUS_AUTH_TYPE: "public"
 
 ## MinIO Console configuration
@@ -53,10 +53,10 @@ service:
   externalIPs: []
   annotations: {}
 
-## MinIO Ingress configuration
+# MinIO Ingress configuration
 ingress:
   enabled: true
-  ingressClassName: "nginx"  # Adjust based on your ingress controller
+  ingressClassName: "nginx"
   annotations:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
@@ -65,6 +65,7 @@ ingress:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     cert-manager.io/cluster-issuer: "letsencrypt-dns"
   path: /
+  # Ensure this host matches the `MINIO_SERVER_URL`
   hosts:
     - object.kube.sterlink.ir
   tls:
@@ -72,7 +73,7 @@ ingress:
       hosts:
         - object.kube.sterlink.ir
 
-## MinIO Console Ingress configuration
+# MinIO Console Ingress configuration
 consoleIngress:
   enabled: true
   ingressClassName: "nginx"
@@ -84,12 +85,14 @@ consoleIngress:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     cert-manager.io/cluster-issuer: "letsencrypt-dns"
   path: /
+  # Ensure this host matches the `MINIO_BROWSER_REDIRECT_URL`
   hosts:
     - minio-console.kube.sterlink.ir
   tls:
     - secretName: minio-console-tls
       hosts:
         - minio-console.kube.sterlink.ir
+
 
 ## Persistence configuration
 persistence:
