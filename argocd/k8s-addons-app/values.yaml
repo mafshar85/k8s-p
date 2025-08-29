@@ -1,7 +1,7 @@
 spec:
   destination:
     server: https://kubernetes.default.svc
-  minio-1:
+  minio:
     repoURL: https://charts.min.io/
     targetRevision: "5.4.0"
     chart: minio
