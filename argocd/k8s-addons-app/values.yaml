@@ -6,5 +6,5 @@ spec:
     targetRevision: "5.4.0"
     chart: minio
     releaseName: minio
-    valueFiles: 
+    valueFiles: https://raw.githubusercontent.com/mafshar85/k8s-p/refs/heads/main/add-ons/minio/helm.values.yaml
     namespace: minio
