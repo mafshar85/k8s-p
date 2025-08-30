@@ -126,16 +126,16 @@ podSecurityContext:
   fsGroupChangePolicy: "OnRootMismatch"
 
 ## Container Security Context  
-securityContext:
-  enabled: true
-  runAsNonRoot: true
-  runAsUser: 1000
-  runAsGroup: 1000
-  readOnlyRootFilesystem: false
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-      - ALL
+# securityContext:
+#   enabled: true
+#   runAsNonRoot: true
+#   runAsUser: 1000
+#   runAsGroup: 1000
+#   readOnlyRootFilesystem: false
+#   allowPrivilegeEscalation: false
+#   capabilities:
+#     drop:
+#       - ALL
 
 ## Node selection and affinity
 nodeSelector: {}
