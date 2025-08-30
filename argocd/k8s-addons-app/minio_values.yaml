@@ -16,7 +16,7 @@ mode: standalone
 drivesPerNode: 1
 
 ## Number of MinIO server nodes (minimum 4 for distributed mode)
-replicas: 1
+replicas: 2
 
 ## Deployment strategy
 deploymentUpdate:
