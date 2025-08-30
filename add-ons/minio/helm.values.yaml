@@ -16,7 +16,7 @@ mode: standalone
 drivesPerNode: 1
 
 ## Number of MinIO server nodes (minimum 4 for distributed mode)
-replicas: 2
+replicas: 3
 
 ## Deployment strategy
 deploymentUpdate:
@@ -96,17 +96,17 @@ consoleIngress:
 
 
 ## Persistence configuration
-persistence:
-  enabled: true
-  annotations: {}
-  storageClass: ""  # Use default storage class or specify your preferred one
-  volumeName: ""
-  accessMode: ReadWriteOnce
-  size: 100Gi
+# persistence:
+#   enabled: true
+#   annotations: {}
+#   storageClass: ""  # Use default storage class or specify your preferred one
+#   volumeName: ""
+#   accessMode: ReadWriteOnce
+#   size: 100Gi
   
-  ## Advanced persistence options
-  existingClaim: ""
-  subPath: ""
+#   ## Advanced persistence options
+#   existingClaim: ""
+#   subPath: ""
 
 ## Resource limits and requests
 resources:
@@ -118,12 +118,12 @@ resources:
     cpu: 500m
 
 ## Pod Security Context
-podSecurityContext:
-  enabled: true
-  runAsUser: 1000
-  runAsGroup: 1000
-  fsGroup: 1000
-  fsGroupChangePolicy: "OnRootMismatch"
+# podSecurityContext:
+#   enabled: true
+#   runAsUser: 1000
+#   runAsGroup: 1000
+#   fsGroup: 1000
+#   fsGroupChangePolicy: "OnRootMismatch"
 
 ## Container Security Context  
 # securityContext:
@@ -138,9 +138,9 @@ podSecurityContext:
 #       - ALL
 
 ## Node selection and affinity
-nodeSelector: {}
+# nodeSelector: {}
 
-tolerations: []
+# tolerations: []
 
 # affinity:
 #   podAntiAffinity:
@@ -153,8 +153,8 @@ tolerations: []
 #           topologyKey: kubernetes.io/hostname
 
 ## Pod annotations and labels
-podAnnotations: {}
-podLabels: {}
+# podAnnotations: {}
+# podLabels: {}
 
 ## Liveness and readiness probes
 livenessProbe:
@@ -197,128 +197,128 @@ startupProbe:
 #   annotations: {}
 #   name: ""
 
-## RBAC configuration
-rbac:
-  create: true
+# ## RBAC configuration
+# rbac:
+#   create: true
 
-## Pod Disruption Budget
-podDisruptionBudget:
-  enabled: false
-  maxUnavailable: 1
+# ## Pod Disruption Budget
+# podDisruptionBudget:
+#   enabled: false
+#   maxUnavailable: 1
 
-## Network Policy
-networkPolicy:
-  enabled: false
-  allowExternal: true
+# ## Network Policy
+# networkPolicy:
+#   enabled: false
+#   allowExternal: true
 
-## Monitoring and metrics
-metrics:
-  serviceMonitor:
-    enabled: false
-    interval: 30s
-    scrapeTimeout: 10s
-    namespace: ~
-    additionalLabels: {}
+# ## Monitoring and metrics
+# metrics:
+#   serviceMonitor:
+#     enabled: false
+#     interval: 30s
+#     scrapeTimeout: 10s
+#     namespace: ~
+#     additionalLabels: {}
 
-## MinIO Post Job (for initial setup)
-postJob:
-  podAnnotations: {}
-  annotations: {}
-  securityContext:
-    enabled: true
-    runAsUser: 1000
-    runAsGroup: 1000
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
+# ## MinIO Post Job (for initial setup)
+# postJob:
+#   podAnnotations: {}
+#   annotations: {}
+#   securityContext:
+#     enabled: true
+#     runAsUser: 1000
+#     runAsGroup: 1000
+#   nodeSelector: {}
+#   tolerations: []
+#   affinity: {}
 
-## Additional containers (sidecars)
-extraContainers: []
+# ## Additional containers (sidecars)
+# extraContainers: []
 
-## Additional volumes
-extraVolumes: []
-extraVolumeMounts: []
+# ## Additional volumes
+# extraVolumes: []
+# extraVolumeMounts: []
 
-## MinIO policies, users, and buckets setup
-policies: []
-# Example policies:
-# - name: bucket-read-only
-#   statements:
-#     - resources:
-#         - 'arn:aws:s3:::bucket-name'
-#         - 'arn:aws:s3:::bucket-name/*'
-#       actions:
-#         - "s3:GetObject"
-#         - "s3:ListBucket"
+# ## MinIO policies, users, and buckets setup
+# policies: []
+# # Example policies:
+# # - name: bucket-read-only
+# #   statements:
+# #     - resources:
+# #         - 'arn:aws:s3:::bucket-name'
+# #         - 'arn:aws:s3:::bucket-name/*'
+# #       actions:
+# #         - "s3:GetObject"
+# #         - "s3:ListBucket"
 
-users: []
-# Example users:
-# - accessKey: myuser
-#   secretKey: mypassword
-#   policy: bucket-read-only
+# users: []
+# # Example users:
+# # - accessKey: myuser
+# #   secretKey: mypassword
+# #   policy: bucket-read-only
 
-buckets: []
-# Example buckets:
-# - name: my-bucket
-#   policy: none
-#   purge: false
-#   versioning: false
-#   objectlocking: false
+# buckets: []
+# # Example buckets:
+# # - name: my-bucket
+# #   policy: none
+# #   purge: false
+# #   versioning: false
+# #   objectlocking: false
 
-## Custom command and args
-customCommands: []
-customArgs: []
+# ## Custom command and args
+# customCommands: []
+# customArgs: []
 
-## Init containers
-initContainers: []
+# ## Init containers
+# initContainers: []
 
-## Priority class
-priorityClassName: ""
+# ## Priority class
+# priorityClassName: ""
 
-## DNS policy and config
-dnsPolicy: "ClusterFirst"
-dnsConfig: {}
+# ## DNS policy and config
+# dnsPolicy: "ClusterFirst"
+# dnsConfig: {}
 
-## Horizontal Pod Autoscaler
-autoscaling:
-  enabled: false
-  minReplicas: 4
-  maxReplicas: 16
-  targetCPU: 75
-  targetMemory: 75
+# ## Horizontal Pod Autoscaler
+# autoscaling:
+#   enabled: false
+#   minReplicas: 4
+#   maxReplicas: 16
+#   targetCPU: 75
+#   targetMemory: 75
 
-## Gateway configuration (if needed)
-gateway:
-  enabled: false
-  type: ""
+# ## Gateway configuration (if needed)
+# gateway:
+#   enabled: false
+#   type: ""
 
-## Distributed mode specific settings
-zones: 1  # Number of zones for distributed deployment
+# ## Distributed mode specific settings
+# zones: 1  # Number of zones for distributed deployment
 
-## MinIO logging
-logging:
-  anonymous: false
-  console: true
-  json: true
+# ## MinIO logging
+# logging:
+#   anonymous: false
+#   console: true
+#   json: true
 
-## Additional environment variables from secrets/configmaps
-extraSecret: {}
-extraConfigMap: {}
+# ## Additional environment variables from secrets/configmaps
+# extraSecret: {}
+# extraConfigMap: {}
 
-## Custom CA certificates
-customCertsPath: /etc/ssl/certs/
-customCerts:
-  enabled: false
-  image:
-    repository: alpine
-    tag: 3.18
-    pullPolicy: IfNotPresent
+# ## Custom CA certificates
+# customCertsPath: /etc/ssl/certs/
+# customCerts:
+#   enabled: false
+#   image:
+#     repository: alpine
+#     tag: 3.18
+#     pullPolicy: IfNotPresent
 
-## Tenant configuration (for MinIO Operator)
-# tenant:
-#   configuration:
-#     name: "minio-config"
-#   configSecret:
-#     name: "minio-env-configuration"
-#     accessKey: "minio"
-#     secretKey: "minio123"
+# ## Tenant configuration (for MinIO Operator)
+# # tenant:
+# #   configuration:
+# #     name: "minio-config"
+# #   configSecret:
+# #     name: "minio-env-configuration"
+# #     accessKey: "minio"
+# #     secretKey: "minio123"
