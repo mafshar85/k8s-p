@@ -6,6 +6,6 @@ spec:
     targetRevision: "5.4.0"
     chart: minio
     releaseName: minio
-    valueFiles: https://raw.githubusercontent.com/mafshar85/k8s-p/refs/heads/main/argocd/k8s-addons-app/minio_values.yaml
-    #valueFiles: https://raw.githubusercontent.com/mafshar85/k8s-p/refs/heads/main/add-ons/minio/helm.values.yaml
+    #valueFiles: https://raw.githubusercontent.com/mafshar85/k8s-p/refs/heads/main/argocd/k8s-addons-app/minio_values.yaml
+    valueFiles: https://raw.githubusercontent.com/mafshar85/k8s-p/refs/heads/main/add-ons/minio/helm.values.yaml
     namespace: minio
