@@ -1,0 +1,324 @@
+# MinIO Helm Chart Values
+# Comprehensive configuration for production deployment
+
+## Global MinIO configuration
+image:
+  repository: quay.io/minio/minio 
+  tag: RELEASE.2024-04-18T19-09-19Z
+
+  pullPolicy: IfNotPresent
+
+## MinIO server mode - distributed for HA
+mode: distributed
+#mode: standalone
+
+## Number of drives per node (should be even, minimum 4 for distributed mode)
+drivesPerNode: 1
+
+## Number of MinIO server nodes (minimum 4 for distributed mode)
+replicas: 4
+
+## Deployment strategy
+deploymentUpdate:
+  type: RollingUpdate
+  maxUnavailable: 50%
+  maxSurge: 50%
+
+## MinIO server configuration
+existingSecret: ""
+rootUser: "admineEcq9vcNVBWh7jLZiQ"
+rootPassword: "R9D6jPNgX8VFLjfHmJjNbrU7VrYnlyJu"  # Change this in production!
+
+
+## MinIO server arguments
+extraArgs: []
+
+## MinIO server environment variables
+environment:
+  MINIO_SERVER_URL: https://object.kube.sterlink.ir
+  MINIO_BROWSER_REDIRECT_URL: https://minio-console.kube.sterlink.ir
+  MINIO_PROMETHEUS_AUTH_TYPE: "public"
+
+## MinIO Console configuration
+consoleService:
+  type: ClusterIP
+  port: 9001
+
+## Service configuration
+service:
+  type: ClusterIP
+  port: 9000
+  nodePort: null
+  clusterIP: ~
+  loadBalancerIP: ~
+  externalIPs: []
+  annotations: {}
+
+# MinIO Ingress configuration
+ingress:
+  enabled: true
+  ingressClassName: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    cert-manager.io/cluster-issuer: "letsencrypt-dns"
+  path: /
+  # Ensure this host matches the `MINIO_SERVER_URL`
+  hosts:
+    - object.kube.sterlink.ir
+  tls:
+    - secretName: minio-tls
+      hosts:
+        - object.kube.sterlink.ir
+
+# MinIO Console Ingress configuration
+consoleIngress:
+  enabled: true
+  ingressClassName: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    cert-manager.io/cluster-issuer: "letsencrypt-dns"
+  path: /
+  # Ensure this host matches the `MINIO_BROWSER_REDIRECT_URL`
+  hosts:
+    - minio-console.kube.sterlink.ir
+  tls:
+    - secretName: minio-console-tls
+      hosts:
+        - minio-console.kube.sterlink.ir
+
+
+## Persistence configuration
+# persistence:
+#   enabled: true
+#   annotations: {}
+#   storageClass: ""  # Use default storage class or specify your preferred one
+#   volumeName: ""
+#   accessMode: ReadWriteOnce
+#   size: 100Gi
+  
+#   ## Advanced persistence options
+#   existingClaim: ""
+#   subPath: ""
+
+## Resource limits and requests
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 250m
+  limits:
+    memory: 2Gi
+    cpu: 500m
+
+## Pod Security Context
+# podSecurityContext:
+#   enabled: true
+#   runAsUser: 1000
+#   runAsGroup: 1000
+#   fsGroup: 1000
+#   fsGroupChangePolicy: "OnRootMismatch"
+
+## Container Security Context  
+# securityContext:
+#   enabled: true
+#   runAsNonRoot: true
+#   runAsUser: 1000
+#   runAsGroup: 1000
+#   readOnlyRootFilesystem: false
+#   allowPrivilegeEscalation: false
+#   capabilities:
+#     drop:
+#       - ALL
+
+## Node selection and affinity
+# nodeSelector: {}
+
+# tolerations: []
+
+# affinity:
+#   podAntiAffinity:
+#     preferredDuringSchedulingIgnoredDuringExecution:
+#       - weight: 100
+#         podAffinityTerm:
+#           labelSelector:
+#             matchLabels:
+#               app.kubernetes.io/name: minio
+#           topologyKey: kubernetes.io/hostname
+
+## Pod annotations and labels
+# podAnnotations: {}
+# podLabels: {}
+
+## Liveness and readiness probes
+livenessProbe:
+  httpGet:
+    path: /minio/health/live
+    port: 9000
+    scheme: HTTP
+  initialDelaySeconds: 120
+  periodSeconds: 30
+  timeoutSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /minio/health/ready
+    port: 9000
+    scheme: HTTP
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
+
+## Startup probe (for slow starting containers)
+startupProbe:
+  httpGet:
+    path: /minio/health/live
+    port: 9000
+    scheme: HTTP
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 60
+
+## ServiceAccount configuration
+# serviceAccount:
+#   create: true
+#   annotations: {}
+#   name: ""
+
+# ## RBAC configuration
+# rbac:
+#   create: true
+
+# ## Pod Disruption Budget
+# podDisruptionBudget:
+#   enabled: false
+#   maxUnavailable: 1
+
+# ## Network Policy
+# networkPolicy:
+#   enabled: false
+#   allowExternal: true
+
+# ## Monitoring and metrics
+# metrics:
+#   serviceMonitor:
+#     enabled: false
+#     interval: 30s
+#     scrapeTimeout: 10s
+#     namespace: ~
+#     additionalLabels: {}
+
+# ## MinIO Post Job (for initial setup)
+# postJob:
+#   podAnnotations: {}
+#   annotations: {}
+#   securityContext:
+#     enabled: true
+#     runAsUser: 1000
+#     runAsGroup: 1000
+#   nodeSelector: {}
+#   tolerations: []
+#   affinity: {}
+
+# ## Additional containers (sidecars)
+# extraContainers: []
+
+# ## Additional volumes
+# extraVolumes: []
+# extraVolumeMounts: []
+
+# ## MinIO policies, users, and buckets setup
+# policies: []
+# # Example policies:
+# # - name: bucket-read-only
+# #   statements:
+# #     - resources:
+# #         - 'arn:aws:s3:::bucket-name'
+# #         - 'arn:aws:s3:::bucket-name/*'
+# #       actions:
+# #         - "s3:GetObject"
+# #         - "s3:ListBucket"
+
+# users: []
+# # Example users:
+# # - accessKey: myuser
+# #   secretKey: mypassword
+# #   policy: bucket-read-only
+
+# buckets: []
+# # Example buckets:
+# # - name: my-bucket
+# #   policy: none
+# #   purge: false
+# #   versioning: false
+# #   objectlocking: false
+
+# ## Custom command and args
+# customCommands: []
+# customArgs: []
+
+# ## Init containers
+# initContainers: []
+
+# ## Priority class
+# priorityClassName: ""
+
+# ## DNS policy and config
+# dnsPolicy: "ClusterFirst"
+# dnsConfig: {}
+
+# ## Horizontal Pod Autoscaler
+# autoscaling:
+#   enabled: false
+#   minReplicas: 4
+#   maxReplicas: 16
+#   targetCPU: 75
+#   targetMemory: 75
+
+# ## Gateway configuration (if needed)
+# gateway:
+#   enabled: false
+#   type: ""
+
+# ## Distributed mode specific settings
+# zones: 1  # Number of zones for distributed deployment
+
+# ## MinIO logging
+# logging:
+#   anonymous: false
+#   console: true
+#   json: true
+
+# ## Additional environment variables from secrets/configmaps
+# extraSecret: {}
+# extraConfigMap: {}
+
+# ## Custom CA certificates
+# customCertsPath: /etc/ssl/certs/
+# customCerts:
+#   enabled: false
+#   image:
+#     repository: alpine
+#     tag: 3.18
+#     pullPolicy: IfNotPresent
+
+# ## Tenant configuration (for MinIO Operator)
+# # tenant:
+# #   configuration:
+# #     name: "minio-config"
+# #   configSecret:
+# #     name: "minio-env-configuration"
+# #     accessKey: "minio"
+# #     secretKey: "minio123"
